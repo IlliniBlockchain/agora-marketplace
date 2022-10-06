@@ -1,4 +1,9 @@
 use anchor_lang::prelude::*;
+use instructions::*;
+
+pub mod error;
+pub mod instructions;
+pub mod state;
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
@@ -7,21 +12,6 @@ pub mod agora_marketplace {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        Ok(())
+        instructions::initialize::initialize(ctx)
     }
-}
-
-#[account]
-pub struct ProfileAccount { //reputation, buy_count, sell_count, time, username
-    //seed: userKey
-}
-
-#[account]
-pub struct UserAccount { //userKey
-    //seed: username
-}
-
-#[derive(Accounts)]
-pub struct Initialize {
-
 }
