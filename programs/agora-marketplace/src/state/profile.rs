@@ -1,29 +1,29 @@
 use anchor_lang::prelude::*;
 
-use super::username;
-
 #[account]
-pub struct ProfileAccount { //reputation, buy_count, sell_count, time, username
+pub struct Profile { //reputation, buy_count, sell_count, time, username
     //seed: userKey
-    pub authority: Pubkey,
     pub reputation: u32,
     pub sell_count: u32,
     pub buy_count: u32,
     pub timestamp: i64,
-    pub username: String
+    pub username: String,
 }
 
-impl ProfileAccount{
-    
-    pub fn initialize(&mut username, pubkey: Pubkey) -> Result<()> {
-        let username = &mut ctx.accounts.username;
-        
-        username.reputation = 0;
-        username.sell_count = 0;
-        username.buy_count = 0;
-        username.timestamp = 0;
+impl Profile {
 
-        username.authority = pubkey;
+    pub const STATIC_SIZE: usize = 8 + 4 + 4 + 4 + 8 + 4; //missing string length
+    
+    pub fn initialize(&mut self, _username: String) -> Result<()> {
+
+        let clock: Clock = Clock::get()?;
+
+        self.reputation = 0;
+        self.sell_count = 0;
+        self.buy_count = 0;
+        self.timestamp = clock.unix_timestamp;
+        self.username = _username;
+
         Ok(())
     }
 }
